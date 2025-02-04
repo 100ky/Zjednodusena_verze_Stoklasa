@@ -1,0 +1,10 @@
+# OS soubory
+.DS_Store
+Thumbs.db
+
+# Vývojové prostředí
+.vscode/
+.idea/
+
+# Node.js
+node_modules/

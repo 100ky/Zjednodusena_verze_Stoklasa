@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Správa pojištěných</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Správa pojištěných osob</h1>
+        <div id="insuranceApp">
+            <div id="newInsured" class="fadeIn">
+                <h2>Přidat nového pojištěného</h2>
+                <div class="form-grid">
+                    <input type="text" id="firstName" placeholder="Zadejte jméno...">
+                    <input type="text" id="lastName" placeholder="Zadejte příjmení...">
+                    <input type="number" id="age" placeholder="Zadejte věk...">
+                    <input type="text" id="phoneNumber" placeholder="Zadejte telefonní číslo...">
+                </div>
+                <button id="createInsuredButton">Přidat pojištěného</button>
+            </div>
+            <div id="insuredList" class="fadeIn">
+                <h2>Seznam pojištěných osob</h2>
+                <ul id="insuredUl"></ul>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
