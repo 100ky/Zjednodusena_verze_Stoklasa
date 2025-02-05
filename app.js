@@ -61,23 +61,33 @@ class InsuranceApp {
     }
 
     saveInsured(index) {
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
-        const age = parseInt(document.getElementById('age').value);
-        const phoneNumber = document.getElementById('phoneNumber').value;
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const age = document.getElementById('age').value;
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
 
-        if (firstName && lastName && age && phoneNumber) {
-            // Vytvoření nového pojištěnce
-            const newInsured = new Insured(firstName, lastName, age, phoneNumber);
-            // Aktualizace záznamu na daném indexu
+        // Pro debugování
+        console.log({
+            firstName,
+            lastName,
+            age,
+            phoneNumber
+        });
+
+        // Vylepšená kontrola vstupů
+        if (firstName && lastName && age && age > 0 && phoneNumber) {
+            const newInsured = new Insured(firstName, lastName, parseInt(age), phoneNumber);
             this.insuredList[index] = newInsured;
             
             this.updateInsuredList();
             this.clearForm();
-            document.getElementById('createInsuredButton').textContent = 'Přidat pojištěného';
-            document.getElementById('createInsuredButton').onclick = () => this.createInsured();
+            
+            // Obnovení původního chování tlačítka
+            const createButton = document.getElementById('createInsuredButton');
+            createButton.textContent = 'Přidat pojištěného';
+            createButton.onclick = () => this.createInsured();
         } else {
-            alert('Vyplňte všechna pole');
+            alert('Vyplňte prosím správně všechna pole. Věk musí být větší než 0.');
         }
     }
 
@@ -91,35 +101,7 @@ class InsuranceApp {
         const insuredUl = document.getElementById('insuredUl');
         insuredUl.innerHTML = '';
         this.insuredList.forEach((insured, index) => {
-            const li = document.createElement('li');
-            const deleteButton = document.createElement('button');
-            const editButton = document.createElement('button');
-            
-            deleteButton.textContent = '🗑️ Smazat';
-            editButton.textContent = '✏️ Upravit';
-            
-            deleteButton.onclick = (e) => {
-                e.stopPropagation();
-                this.deleteInsured(index);
-            };
-            
-            editButton.onclick = (e) => {
-                e.stopPropagation();
-                this.editInsured(index);
-            };
-
-            li.innerHTML = `
-                <strong>${insured.firstName} ${insured.lastName}</strong>
-                <div style="margin: 10px 0">
-                    <span style="margin-right: 20px">📅 ${insured.age} let</span>
-                    <span>📱 ${insured.phoneNumber}</span>
-                </div>
-            `;
-            
-            li.appendChild(editButton);
-            li.appendChild(deleteButton);
-            
-            li.classList.add('fadeIn');
+            const li = createInsuredItem(insured, index);
             insuredUl.appendChild(li);
         });
     }
@@ -130,6 +112,73 @@ class InsuranceApp {
         document.getElementById('age').value = '';
         document.getElementById('phoneNumber').value = '';
     }
+}
+
+function createInsuredItem(insured, id) {
+    const li = document.createElement('li');
+    li.dataset.id = id;
+    li.innerHTML = `
+        <strong>${insured.firstName} ${insured.lastName}</strong>
+        <p>Věk: ${insured.age}</p>
+        <p>Tel.: ${insured.phoneNumber}</p>
+        <button class="edit-btn">Upravit</button>
+        <button class="delete-btn">Smazat</button>
+    `;
+
+    // Přidání event listenerů pro tlačítka
+    li.querySelector('.edit-btn').addEventListener('click', () => openEditModal(insured, id));
+    li.querySelector('.delete-btn').addEventListener('click', () => window.app.deleteInsured(id));
+    
+    return li;
+}
+
+function openEditModal(insured, id) {
+    const modal = document.createElement('div');
+    modal.className = 'edit-modal fadeIn';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Upravit pojištěného</h2>
+            <input type="text" id="editFirstName" value="${insured.firstName}">
+            <input type="text" id="editLastName" value="${insured.lastName}">
+            <input type="number" id="editAge" value="${insured.age}">
+            <input type="text" id="editPhoneNumber" value="${insured.phoneNumber}">
+            <button id="saveEdit">Uložit změny</button>
+            <button id="cancelEdit">Zrušit</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    modal.querySelector('#saveEdit').addEventListener('click', () => saveEdit(id, modal));
+    modal.querySelector('#cancelEdit').addEventListener('click', () => modal.remove());
+}
+
+function saveEdit(id, modal) {
+    const firstName = document.querySelector('#editFirstName').value.trim();
+    const lastName = document.querySelector('#editLastName').value.trim();
+    const age = parseInt(document.querySelector('#editAge').value);
+    const phoneNumber = document.querySelector('#editPhoneNumber').value.trim();
+
+
+    // Validace bez alert
+    if (!firstName || !lastName || !phoneNumber || isNaN(age) || age <= 0) {
+        return false; // Vrátíme false místo alert
+    }
+
+    const editedInsured = new Insured(firstName, lastName, age, phoneNumber);
+    
+    // Update in UI and storage
+    const li = document.querySelector(`li[data-id="${id}"]`);
+    li.innerHTML = `
+        <strong>${editedInsured.firstName} ${editedInsured.lastName}</strong>
+        <p>Věk: ${editedInsured.age}</p>
+        <p>Tel.: ${editedInsured.phoneNumber}</p>
+        <button class="edit-btn">Upravit</button>
+        <button class="delete-btn">Smazat</button>
+    `;
+    
+    li.querySelector('.edit-btn').addEventListener('click', () => openEditModal(editedInsured, id));
+    modal.remove();
+    return true; // Úspěšná editace
 }
 
 document.addEventListener('DOMContentLoaded', () => {
