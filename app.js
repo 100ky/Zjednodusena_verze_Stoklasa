@@ -125,11 +125,30 @@ function createInsuredItem(insured, id) {
         <button class="delete-btn">Smazat</button>
     `;
 
-    // Přidání event listenerů pro tlačítka
     li.querySelector('.edit-btn').addEventListener('click', () => openEditModal(insured, id));
-    li.querySelector('.delete-btn').addEventListener('click', () => window.app.deleteInsured(id));
+    li.querySelector('.delete-btn').addEventListener('click', () => openDeleteConfirmation(insured, id));
     
     return li;
+}
+
+function openDeleteConfirmation(insured, id) {
+    const modal = document.createElement('div');
+    modal.className = 'edit-modal fadeIn';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Potvrdit smazání</h2>
+            <p>Opravdu chcete smazat pojištěnce ${insured.firstName} ${insured.lastName}?</p>
+            <button id="confirmDelete" style="background: #dc3545;">Smazat</button>
+            <button id="cancelDelete">Zrušit</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    modal.querySelector('#confirmDelete').addEventListener('click', () => {
+        window.app.deleteInsured(id);
+        modal.remove();
+    });
+    modal.querySelector('#cancelDelete').addEventListener('click', () => modal.remove());
 }
 
 function openEditModal(insured, id) {
@@ -158,15 +177,16 @@ function saveEdit(id, modal) {
     const age = parseInt(document.querySelector('#editAge').value);
     const phoneNumber = document.querySelector('#editPhoneNumber').value.trim();
 
-
-    // Validace bez alert
     if (!firstName || !lastName || !phoneNumber || isNaN(age) || age <= 0) {
-        return false; // Vrátíme false místo alert
+        return false;
     }
 
     const editedInsured = new Insured(firstName, lastName, age, phoneNumber);
     
-    // Update in UI and storage
+    // Aktualizujeme položku v seznamu pojištěnců
+    window.app.insuredList[id] = editedInsured;
+    
+    // Update v UI
     const li = document.querySelector(`li[data-id="${id}"]`);
     li.innerHTML = `
         <strong>${editedInsured.firstName} ${editedInsured.lastName}</strong>
@@ -176,9 +196,12 @@ function saveEdit(id, modal) {
         <button class="delete-btn">Smazat</button>
     `;
     
+    // Znovu přidáme event listenery pro obě tlačítka
     li.querySelector('.edit-btn').addEventListener('click', () => openEditModal(editedInsured, id));
+    li.querySelector('.delete-btn').addEventListener('click', () => openDeleteConfirmation(editedInsured, id));
+    
     modal.remove();
-    return true; // Úspěšná editace
+    return true;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
