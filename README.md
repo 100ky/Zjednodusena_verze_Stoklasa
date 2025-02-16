@@ -1,26 +1,38 @@
-# Aplikace pro správu pojištěných
+# Správa pojištěných
 
-Jednoduchá webová aplikace pro správu pojištěných osob vytvořená pomocí HTML, CSS a JavaScriptu.
+Jednoduchá aplikace pro správu pojištěných osob vytvořená v JavaScriptu.
 
 ## Funkce
 
-- Přidávání nových pojištěných osob
-- Editace existujících záznamů
+- Přidávání nových pojištěných
+- Úprava existujících záznamů
 - Mazání záznamů
-- Zobrazení seznamu všech pojištěných
-- Responsivní design
-
-## Technologie
-
-- HTML5
-- CSS3 (s animacemi)
-- Vanilla JavaScript (ES6+)
-- Google Fonts (Poppins)
+- Validace vstupních údajů
+- Responzivní design
 
 ## Instalace
 
-1. Stáhněte nebo naklonujte repozitář
-2. Otevřete soubor `index.html` v prohlížeči
+1. Naklonujte repozitář
+```bash
+git clone https://github.com/100ky/Zjednodusena_verze_Stoklasa.git
+```
+
+2. Nainstalujte závislosti
+```bash
+npm install
+```
+
+3. Spusťte aplikaci
+```bash
+npm start
+```
+
+## Technologie
+
+- JavaScript (ES modules)
+- HTML5
+- CSS3
+- Jest (pro testy)
 
 ## Licence
 

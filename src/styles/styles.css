@@ -1,0 +1,140 @@
+/* Definice globálních proměnných pro barvy a základní hodnoty */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --border-color: #dee2e6;
+}
+
+/* Základní nastavení stránky */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Kontejner celé aplikace s maximální šířkou */
+#app {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Stylování nadpisů */
+h1, h2 {
+    color: var(--primary-color);
+}
+
+/* Mřížka pro formulářové prvky - responzivní design */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Stylování vstupních polí */
+input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Základní stylování tlačítek s animací */
+button {
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Plynulý přechod pro všechny změny */
+    opacity: 1; /* Výchozí průhlednost */
+}
+
+/* Efekt při najetí na tlačítko */
+button:hover {
+    /* Ztmavení tlačítka při najetí myší */
+    filter: brightness(0.85);
+    /* Mírné zmenšení tlačítka pro efekt */
+    transform: scale(0.98);
+}
+
+/* Speciální stylování pro tlačítko smazání */
+.delete-btn {
+    background-color: var(--danger-color);
+}
+
+/* Speciální ztmavení pro delete tlačítko */
+.delete-btn:hover {
+    filter: brightness(0.9);
+}
+
+/* Speciální stylování pro tlačítko úprav */
+.edit-btn {
+    background-color: var(--success-color);
+    margin-right: 10px;
+}
+
+/* Speciální ztmavení pro edit tlačítko */
+.edit-btn:hover {
+    filter: brightness(0.9);
+}
+
+/* Stylování seznamu pojištěných */
+#insuredList ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Jednotlivé položky seznamu s efektem stínu */
+#insuredList li {
+    background: white;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Modální okno s překrytím celé stránky */
+.edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Obsah modálního okna */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 4px;
+    min-width: 300px;
+}
+
+/* Vstupní pole v modálním okně */
+.modal-content input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Animace pro plynulé zobrazení prvků */
+.fadeIn {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Definice animace fadeIn */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
